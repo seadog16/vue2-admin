@@ -1,0 +1,55 @@
+@import "./var.styl";
+
+body
+    margin 0
+    padding 0
+    font-family "Helvetica Neue", Helvetica, Avenir, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+    -webkit-font-smoothing antialiased
+    -moz-osx-font-smoothing grayscale
+    font-size 14px
+
+for i in 1...4
+    h{i}
+        margin 0
+
+a
+    cursor pointer
+    text-decoration none
+
+.clearfix
+    &:before
+    &:after
+        content ""
+        display table
+
+    &:after
+        clear both
+
+.alignMiddle
+    &:before
+        content ""
+        display inline-block
+        height 100%
+        vertical-align middle
+
+    & > *
+        display inline-block
+        vertical-align middle
+
+.alignCenter
+    text-align center
+
+[class*=--small]
+    font-size 13px
+
+.el-textarea__inner
+    font-size 14px
+.wrap
+    width 1200px
+    margin auto
+.floatLeft
+    float left
+.floatRight
+    float right
+.el-tooltip__popper
+    max-width 400px
