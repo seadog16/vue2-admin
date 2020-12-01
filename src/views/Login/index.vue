@@ -1,29 +1,33 @@
 <template lang="pug">
     .login
-        .login-card.clearfix
-            .login-bg
-                .fly
-                .fly
-                .flash
-            .login-form
-                h2 {{title}}
-                el-form(
-                    :model="login"
-                    @submit.native.prevent="submitHandler"
-                    hide-required-asterisk)
-                    el-form-item(label="用户名")
-                        el-input(v-model.trim="login.user")
-                    el-form-item(label="密码")
-                        el-input(show-password v-model.trim="login.pass")
-                    el-form-item.formItem
-                        el-checkbox.floatLeft(v-model="savePass") 记住密码
-                        a.register.floatRight(@click="$router.push('/register')") 忘记密码？
-                    el-form-item
-                        el-button.btn(
-                            type="primary"
-                            native-type="submit"
-                            :loading="submitLoad") 登录
-                        span.red(v-if="passErrorMsg") {{ passErrorMsg }}
+        .img
+        .title
+            h1 {{title}}
+        el-form.form(
+            :modal="form"
+            hide-required-asterisk
+            @submit.native.prevent="submitHandler")
+            h2 账号登录
+            el-form-item(prop="user")
+                el-input(
+                    v-model.trim="form.user"
+                    prefix-icon="el-icon-user"
+                    placeholder="请输入用户名/手机号")
+            el-form-item(prop="pass")
+                el-input(
+                    v-model.trim="form.pass"
+                    show-password
+                    prefix-icon="el-icon-lock"
+                    placeholder="请输入密码")
+            el-form-item
+                el-checkbox(v-model="savePass") 记住用户名密码
+            el-form-item
+                el-button.submit(
+                    :loading="loading"
+                    type="primary"
+                    round
+                    native-type="submit") 立即登录
+            .error {{passErrorMsg}}
 </template>
 
 <script>
@@ -36,7 +40,7 @@ export default {
     data() {
         return {
             title: document.title,
-            login: { user: "", pass: "" },
+            form: { user: "", pass: "" },
             passErrorMsg: "",
             submitLoad: false,
             timeSet: 0,
@@ -62,19 +66,19 @@ export default {
             if (cache) {
                 const jsonStr = AES.decrypt(cache, "ytj").toString(ENC);
                 const obj = JSON.parse(jsonStr);
-                this.login.user = obj?.user;
-                this.login.pass = obj?.pass;
+                this.form.user = obj?.user;
+                this.form.pass = obj?.pass;
                 this.savePass = Boolean(obj?.user) || Boolean(obj?.user);
             }
         },
         submitHandler() {
-            if (!this.login.user || !this.login.pass) {
+            if (!this.form.user || !this.form.pass) {
                 this.passErrorMsg = "用户名或密码不能为空";
             } else {
                 this.passErrorMsg = "";
                 this.submitLoad = true;
                 if (this.savePass) {
-                    const { user, pass } = this.login;
+                    const { user, pass } = this.form;
                     const jsonStr = JSON.stringify({ user, pass });
                     const cache = AES.encrypt(jsonStr, "ytj").toString();
                     window.localStorage.setItem("login", cache);
@@ -82,8 +86,8 @@ export default {
                     window.localStorage.removeItem("login");
                 }
                 getToken({
-                    username: this.login.user,
-                    password: this.login.pass
+                    username: this.form.user,
+                    password: this.form.pass
                 })
                     .then(res => {
                         window.sessionStorage.setItem("token", String(res));
@@ -103,113 +107,109 @@ export default {
 
 <style scoped lang="stylus">
 .login
-    background url("~@/assets/images/loginBG.svg")
-    background-size cover
-    background-position center
+    position absolute
+    height 100%
     width 100%
-    height calc(100vh - 80px)
-    position relative
+    min-height 500px
+    min-width 860px
+    background url("~@/assets/images/loginBG1.svg")
+    background-position center
+    background-size cover
 
-    h1
-        font-weight 200
-        font-size 28px
+    .title
         text-align center
+        h1
+            font-size 20px
+            font-weight normal
+            position relative
+            display inline-block
+            margin 30px 0
+            user-select none
+            color $--color-text-placeholder
 
-        & > *
-            vertical-align middle
+            &:before,
+            &:after
+                content ""
+                width 120px
+                height 1px
+                background-color $--color-text-placeholder
+                position absolute
+                top 14px
 
-        .logo
-            width 40px
-            height @width
+            &:before
+                left -135px
+            &:after
+                right -135px
 
-    h2
-        color $color-primary
-        font-weight 400
-        margin-bottom 10px
-        margin-top 15px
-        text-align center
-
-    &-card
-        $width = 640px
-        $height = 400px
-        $left = 260px
-        width $width
-        height $height
+    .form
         position absolute
-        top 40%
+        width 350px
+        height 360px
+        top 50%
         left 50%
-        transform translate(-50%, -50%)
-        box-sizing border-box
-        box-shadow 0 2px 12px 0 rgba(0, 0, 0, .1)
+        margin-top (-1 * @height / 2 - 20px)
+        margin-left 50px
+        box-shadow 6px 2px 16px #D0E2FF;
+        background-color #fff
         border-radius 6px
-        background #fff
-        overflow hidden
+        padding 40px
+        box-sizing border-box
 
-        .login-bg
-            width $left
-            position absolute
-            left 0
-            top 0
-            height 100%
-            background url("~@/assets/images/bannerPic.svg"),
-                linear-gradient(to right, #000f89, #2d3368)
-            background-size contain
-            background-position center
-            background-repeat no-repeat
-            overflow hidden
+        h2
+            font-size 22px
+            color $--color-primary
+            position relative
+            font-weight normal
+            margin 0 10px 50px
 
-            .flash
-                background url("~@/assets/images/ellipse.svg")
+            &:before,
+            &:after
+                content ""
                 position absolute
-                top 80px
-                left -160px
-                width 600px
-                height 330px
-                background-size 140%
-                background-repeat no-repeat
-                background-position center
-                backdrop-filter filter(20px)
-                opacity 0.3
-                transform rotate(-40deg)
+                height 4px
+                background-color $--color-primary
+                bottom -14px
+                border-radius 10px
 
-            .fly
-                position absolute
-                width 160px
-                height 6px
-                border-radius 20px
-                transform rotate(-20deg)
-                background linear-gradient(90deg, rgba(0, 255, 255, .45), rgba(0, 255, 255, 0))
+            &:before
+                width 44px
+                left 0
+            &:after
+                width 10px
+                left 50px
 
-            .fly:nth-child(1)
-                top 280px
-                right -130px
+        & >>> .el-input
+            &__inner
+                background-color $--background-color-base
+                border-radius 30px
+                border-color transparent
+                height 36px
+                line-height 36px
+                &:focus
+                    border-color $--color-primary
+                    box-shadow 0 0 6px $--color-primary-light-4
 
-            .fly:nth-child(2)
-                top 120px
-                left -80px
+            .el-input__icon
+                height 36px
+                line-height 36px
 
-        .login-form
-            margin-left $left
-            padding 0 40px
-
-        .red
-            margin-left 20px
-            color $color-error
-
-        .btn
+        .submit
             width 100%
+            height 36px
+            box-shadow 0px 2px 8px rgba(26, 106, 235, .5);
 
-.register
-    font-weight 500
-    margin-left 20px
+        .error
+            text-align center
+            color $--color-danger
 
-.input
-    .disabled
+    .img
+        width 500px
+        height 430px
+        background url("~@/assets/images/loginIMG1.svg")
         position absolute
-        width 100%
-        height @width
-        top 0
-        left 0
-        cursor not-allowed
-        background rgba(255, 255, 255, .5)
+        top 50%
+        left 50%
+        margin-top (-1 * @height / 2)
+        margin-left - @width
+        right 0
 </style>
