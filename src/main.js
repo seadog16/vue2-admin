@@ -6,6 +6,7 @@ import ContentMenu from "v-contextmenu";
 import "v-contextmenu/dist/index.css";
 import ElementUI from "element-ui";
 import "@/style/init.styl";
+import "@/mock";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { size: "small" });

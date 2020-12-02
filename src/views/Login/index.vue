@@ -39,6 +39,7 @@ export default {
     name: "Login",
     data() {
         return {
+            loading: false,
             title: document.title,
             form: { user: "", pass: "" },
             passErrorMsg: "",
@@ -161,6 +162,7 @@ export default {
             position relative
             font-weight normal
             margin 0 10px 50px
+            user-select none
 
             &:before,
             &:after
