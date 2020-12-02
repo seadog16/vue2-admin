@@ -52,30 +52,10 @@ router.beforeEach((to, from, next) => {
                                         component: () => import(`@/views/${v.component}.vue`)
                                     };
                                 })
-                    );
+                        );
                         router.addRoutes([layout]);
                         isRoute = true;
-                        if ($store.state.sys.role !== "system") {
-                            if ($store.state.sys.userInfo.status === 3) {
-                                if (to.fullPath.match(/^\/center/)) next("/user/account");
-                                else next({ ...to, replace: true });
-                            } else {
-                                next({
-                                    path: "information",
-                                    query: {
-                                        active: $store.state.sys.userInfo.status || 0
-                                    }
-                                });
-                            }
-                            // if (storeSys.menus.length) {
-                            //     if (to.fullPath.match(/^\/center/)) next("/user/account");
-                            //     else next({ ...to, replace: true });
-                            // } else {
-                            //     next("information");
-                            // }
-                        } else {
-                            next({ ...to, replace: true });
-                        }
+                        next({ ...to, replace: true });
                     })
                     .catch(() => {
                         isRoute = false;

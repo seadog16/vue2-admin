@@ -45,7 +45,6 @@ export default {
             passErrorMsg: "",
             submitLoad: false,
             timeSet: 0,
-            codeRule: { required: true, message: "请填写验证码" },
             savePass: false
         };
     },
@@ -191,14 +190,15 @@ export default {
                     border-color $--color-primary
                     box-shadow 0 0 6px $--color-primary-light-4
 
-            .el-input__icon
+            .el-input__prefix
                 height 36px
                 line-height 36px
+                font-size 18px
 
         .submit
             width 100%
             height 36px
-            box-shadow 0px 2px 8px rgba(26, 106, 235, .5);
+            box-shadow 0 2px 8px rgba($--color-primary, .5);
 
         .error
             text-align center
