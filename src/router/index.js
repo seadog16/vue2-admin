@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
+import $store from "@/store";
+import { logout } from "@/utils";
 
 Vue.use(VueRouter);
 
@@ -17,7 +19,6 @@ const router = new VueRouter({
 
 let isRoute = false;
 router.beforeEach((to, from, next) => {
-    const { $store } = router.app;
     NProgress.start();
     const whiteList = [/^\/login/];
     const isWhite = whiteList.some(v => v.test(to.fullPath));
@@ -28,13 +29,13 @@ router.beforeEach((to, from, next) => {
         const token = window.sessionStorage.getItem("token");
         if (token) {
             if (!isRoute) {
-                Promise.all([$store.sys.queryMenus()])
+                Promise.all([$store.dispatch("sys/queryMenu")])
                     .then(() => {
-                        // const [r]: any[] = storeSys.menus.filter((v: any) => Boolean(v.component));
+                        const [r] = $store.state.sys.menus.filter(v => Boolean(v.component));
                         const layout = {
                             path: "/",
                             name: "Layout",
-                            // redirect: r?.uri,
+                            redirect: r?.uri,
                             component: () => import("@/views/Layout/index.vue"),
                             children: []
                         };
@@ -59,7 +60,8 @@ router.beforeEach((to, from, next) => {
                     })
                     .catch(() => {
                         isRoute = false;
-                        next();
+                        if (from.fullPath.match(/^\/login/)) next(new Error("菜单加载失败"));
+                        else logout();
                     });
             } else {
                 next();

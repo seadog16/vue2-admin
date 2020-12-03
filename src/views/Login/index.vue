@@ -91,7 +91,7 @@ export default {
                 })
                     .then(res => {
                         window.sessionStorage.setItem("token", String(res));
-                        this.$router.push("/center");
+                        this.$router.push("/");
                     })
                     .catch(err => {
                         this.passErrorMsg = err;
