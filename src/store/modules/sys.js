@@ -4,6 +4,7 @@ import { queryMenu, queryDict } from "@/http/api/sys";
 
 const state = {
     menus: [],
+    tabs: [],
     menuCollapse: false,
     dictionary: {}
 };
@@ -19,11 +20,7 @@ const mutations = {
     }
 };
 const getters = {
-    sideMenu: state =>
-        recursive(state.menus, {
-            field: "menuId",
-            parent: "parMenuId"
-        })
+    menuTree: state => recursive(state.menus)
 };
 const actions = {
     queryMenu({ commit }) {

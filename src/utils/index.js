@@ -1,12 +1,13 @@
 import $store from "@/store";
 import $router from "@/router";
 
-export const logout = () => {
+export const logout = fun => {
     $store.commit("sys/SET_STATE", {
         menus: []
     });
     window.sessionStorage.removeItem("token");
-    $router.push("/login");
+    const func = fun || $router.push;
+    func("/login");
 };
 
 export const recursive = (arrayObject, options = {}) => {

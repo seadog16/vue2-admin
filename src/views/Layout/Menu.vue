@@ -1,16 +1,15 @@
 <template lang="pug">
     el-menu(
         @select="changeRoute"
-        :default-active="$route.fullPath"
-        :collapse-transition="false")
+        :default-active="$route.fullPath")
         menu-item(
-            v-for="(item, index) in menu"
+            v-for="(item, index) in menuTree"
             :key="index"
             :menu="item")
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import MenuItem from "./MenuItem.vue";
 
 export default {
@@ -23,6 +22,9 @@ export default {
             type: Array,
             default: () => []
         }
+    },
+    computed: {
+        ...mapGetters("sys", ["menuTree"])
     },
     methods: {
         ...mapMutations("sys", ["pushTabs"]),
@@ -38,5 +40,5 @@ export default {
             }
         }
     }
-}
+};
 </script>

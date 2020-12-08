@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getToken } from "@/http/api/auth";
+import { queryToken } from "@/http/api/auth";
 import AES from "crypto-js/aes";
 import ENC from "crypto-js/enc-utf8";
 
@@ -44,18 +44,8 @@ export default {
             form: { user: "", pass: "" },
             passErrorMsg: "",
             submitLoad: false,
-            timeSet: 0,
             savePass: false
         };
-    },
-    watch: {
-        timeSet(val) {
-            if (val > 0) {
-                setTimeout(() => {
-                    this.timeSet--;
-                }, 1000);
-            }
-        }
     },
     created() {
         this.loadCache();
@@ -76,7 +66,7 @@ export default {
                 this.passErrorMsg = "用户名或密码不能为空";
             } else {
                 this.passErrorMsg = "";
-                this.submitLoad = true;
+                this.loading = true;
                 if (this.savePass) {
                     const { user, pass } = this.form;
                     const jsonStr = JSON.stringify({ user, pass });
@@ -85,19 +75,19 @@ export default {
                 } else {
                     window.localStorage.removeItem("login");
                 }
-                getToken({
+                queryToken({
                     username: this.form.user,
                     password: this.form.pass
                 })
                     .then(res => {
                         window.sessionStorage.setItem("token", String(res));
-                        this.$router.push("/");
+                        this.$router.push("/").catch(() => {});
                     })
                     .catch(err => {
                         this.passErrorMsg = err;
                     })
                     .finally(() => {
-                        this.submitLoad = false;
+                        this.loading = false;
                     });
             }
         }

@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
     const whiteList = [/^\/login/];
     const isWhite = whiteList.some(v => v.test(to.fullPath));
     if (isWhite) {
-        if (/^\/login/.test(to.fullPath)) isRoute = false;
+        isRoute = false;
         next();
     } else {
         const token = window.sessionStorage.getItem("token");
@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
                                             name: v.menu,
                                             component: v.component
                                         },
-                                        component: () => import(`@/views/${v.component}.vue`)
+                                        component: () => import(`@/pages/${v.component}`)
                                     };
                                 })
                         );
@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
                     .catch(() => {
                         isRoute = false;
                         if (from.fullPath.match(/^\/login/)) next(new Error("菜单加载失败"));
-                        else logout();
+                        else logout(next);
                     });
             } else {
                 next();

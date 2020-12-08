@@ -1,5 +1,4 @@
 import axios from "axios";
-import { logout } from "@/utils";
 import vm from "@/main";
 
 const http = axios.create();
@@ -34,7 +33,7 @@ http.interceptors.response.use(
                     vm.$alert("您的账号已超时或在其他设备登录，请重新登录", "警告", {
                         type: "error"
                     }).finally(() => {
-                        logout();
+                        vm.$router.push("/logout");
                         unAuth = false;
                     });
                 }
