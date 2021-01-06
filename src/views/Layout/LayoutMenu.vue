@@ -1,5 +1,5 @@
 <template lang="pug">
-    el-menu(
+    el-menu.menu(
         @select="changeRoute"
         :default-active="$route.fullPath")
         menu-item(
@@ -13,7 +13,7 @@ import { mapGetters, mapMutations } from "vuex";
 import MenuItem from "./MenuItem.vue";
 
 export default {
-    name: "Menu",
+    name: "LayoutMenu",
     components: {
         MenuItem
     },
@@ -42,3 +42,7 @@ export default {
     }
 };
 </script>
+<style lang="stylus" scoped>
+.menu
+    border-right none
+</style>
