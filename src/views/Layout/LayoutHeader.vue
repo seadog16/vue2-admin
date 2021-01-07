@@ -1,14 +1,14 @@
 <template lang="pug">
-    .footer.alignMiddle Footer
+    .header.alignMiddle Header
 </template>
 
 <script>
 export default {
-    name: "LayoutFooter"
+    name: "LayoutHeader"
 };
 </script>
 
 <style scoped lang="stylus">
-.footer
+.header
     height 100%
 </style>

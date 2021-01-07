@@ -1,7 +1,8 @@
 <template lang="pug">
     el-menu.menu(
         @select="changeRoute"
-        :default-active="$route.fullPath")
+        :default-active="$route.fullPath"
+        :collapse="menuCollapse")
         menu-item(
             v-for="(item, index) in menuTree"
             :key="index"
@@ -9,7 +10,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import MenuItem from "./MenuItem.vue";
 
 export default {
@@ -24,6 +25,7 @@ export default {
         }
     },
     computed: {
+        ...mapState("sys", ["menuCollapse"]),
         ...mapGetters("sys", ["menuTree"])
     },
     methods: {
