@@ -1,23 +1,23 @@
 <template lang="pug">
-    el-container.container
-        el-aside.container-side(:width="menuCollapse?'64px':'240px'")
-            el-header.container-brand
-                layout-brand
+    .container.clearfix(:class="{menuCollapse}")
+        .container-side
+            .container-brand
+                layout-brand.brand
                 a.container-collapse.alignMiddle.alignCenter(@click="SET_STATE({menuCollapse:!menuCollapse})")
                     .iconCollapse
                         span
                         span
                         span
-            .container-block
-            el-scrollbar.container-side-scroll
-                layout-menu
-        el-container
-            el-header
-                layout-header
-            el-main.container-main
-                router-view
-            el-footer(height="40px")
-                layout-footer
+            el-aside.container-side-menu(:width="menuCollapse?'64px':'240px'")
+                el-scrollbar
+                    layout-menu
+        el-header.container-header(height="50px")
+            layout-header
+        el-main.container-main
+            el-scrollbar
+                router-view.container-main-view
+        el-footer.container-footer(height="40px")
+            layout-footer
 </template>
 
 <script>
@@ -51,34 +51,70 @@ export default {
             return this.tabs.map(v => v.code);
         }
     },
+    mounted() {
+        this.fixedScreen();
+    },
     methods: {
-        ...mapMutations("sys", ["SET_STATE"])
+        ...mapMutations("sys", ["SET_STATE"]),
+        fixedScreen() {
+            document.body.classList.add("fixed-screen");
+            document.documentElement.classList.add("fixed-screen");
+        }
     }
 };
 </script>
-<style lang="stylus">
-body, html
-    height 100%
-</style>
+
 <style scoped lang="stylus">
+$side-width = 240px
+$side-collapse-width = 64px
+$header-height = 50px
+$footer-height = 40px
+
 .container
-    min-width 1200px
     height 100%
 
-    &-block
-        position absolute
-        z-index 1
-        height 15px
-        width 100%
-        background linear-gradient(hsla(0, 0, 100, 1), hsla(0, 0, 100, 0))
+    &-side
+        position fixed
+        left 0
+        top 0
+        bottom 0
+        display flex
+        flex-direction column
+        background-color white
+
+        &-menu
+            flex auto
+            border-right 1px solid #f2f4f9
+            box-shadow 0 8px 10px 0 rgba(183 192 206, .2)
+            transition $--all-transition
+
+            & >>> .el-scrollbar
+                height 100%
+
+                .el-scrollbar__wrap
+                    height calc(100% + 15px)
 
     &-brand
+        height 50px
+        flex none
+        border-bottom 1px solid #f2f4f9
+        border-right 1px solid #f2f4f9
         position relative
+
+        .brand
+            opacity 1
+            transition $--fade-transition
+            position static
+            padding 0 20px
+
+            ^[-2].menuCollapse &
+                opacity 0
+                position absolute
 
     &-collapse
         position absolute
-        right 5px
-        top 10px
+        right 12px
+        top 5px
         width 40px
         height 40px
         background alpha($--background-color-base, 0)
@@ -98,19 +134,46 @@ body, html
                 width 100%
                 margin-top 4px
 
-    &-side
-        width $side-width
-        border-right 1px solid $--border-color-lighter
-        position relative
-        background white
+    &-header
+        position fixed
+        top 0
+        left $side-width
+        right 0
+        background-color white
+        border-bottom 1px solid #f2f4f9
+        box-shadow 3px 0 10px 0 rgba(183 192 206, .2)
         transition $--all-transition
 
-        &-scroll
-            height "calc(100% - %s)" % $header-height
+        ^[-1].menuCollapse &
+            left $side-collapse-width
 
-            & >>> .el-scrollbar__wrap
-                height calc(100% + 15px)
+    &-footer
+        position fixed
+        bottom 0
+        left $side-width
+        right 0
+        background-color white
+        border-top 1px solid #f2f4f9
+        box-shadow 3px 0 10px 0 rgba(183 192 206, .2)
+        transition $--all-transition
+
+        ^[-1].menuCollapse &
+            left $side-collapse-width
 
     &-main
-        background $--background-color-base
+        height 100%
+        padding $header-height 0 $footer-height $side-width
+        transition $--all-transition
+
+        &-view
+            padding 20px
+
+        & >>> .el-scrollbar
+            height 100%
+
+            .el-scrollbar__wrap
+                height calc(100% + 15px)
+
+        ^[-1].menuCollapse &
+            padding-left $side-collapse-width
 </style>

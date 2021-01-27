@@ -1,5 +1,65 @@
 <template lang="pug">
-    el-table
+    div
+        el-table
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
+        h1 abc
 </template>
 
 <script>
