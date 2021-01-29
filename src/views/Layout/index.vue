@@ -14,8 +14,8 @@
         el-header.container-header(height="50px")
             layout-header
         el-main.container-main
-            el-scrollbar
-                router-view.container-main-view
+            .container-main-view
+                router-view
         el-footer.container-footer(height="40px")
             layout-footer
 </template>
@@ -163,10 +163,14 @@ $footer-height = 40px
     &-main
         height 100%
         padding $header-height 0 $footer-height $side-width
+        box-sizing border-box
         transition $--all-transition
+        background-color #f9fafb
 
         &-view
             padding 20px
+            height 100%
+            box-sizing border-box
 
         & >>> .el-scrollbar
             height 100%

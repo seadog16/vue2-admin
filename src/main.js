@@ -7,10 +7,16 @@ import "v-contextmenu/dist/index.css";
 import ElementUI from "element-ui";
 import "@/style/init.styl";
 import "@/mock";
+import ByPage from "@/components/ByPage";
+import ByTable from "@/components/ByTable";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { size: "small" });
 Vue.use(ContentMenu);
+
+// 自定义组件
+Vue.component("ByPage", ByPage);
+Vue.component("ByTable", ByTable);
 
 export default new Vue({
     router,
