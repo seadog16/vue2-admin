@@ -17,18 +17,19 @@
                     v-if="item.slot"
                     :name="item.slot")
                 el-table-column(
-                    v-else-if="item.options"
-                    v-bind="item")
-                    template(v-slot="{row}")
-                        el-tag(
-                            v-if="findValue(row, item)"
-                            size="small"
-                            effect="plain"
-                            v-bind="findColor(row, item)") {{findValue(row, item)}}
+                    :label="item.label"
+                    :prop="item.prop"
+                    v-else-if="item.options || item.dict")
+                    column-tag(
+                        slot-scope="{row}"
+                        :item="item"
+                        :row="row")
                 el-table-column(
                     v-else
                     show-overflow-tooltip
-                    v-bind="item")
+                    :label="item.label"
+                    :prop="item.prop"
+                    v-bind="item.tableProperties")
             template(slot="empty")
                 slot(name="empty")
         el-pagination.pagination(
@@ -43,8 +44,13 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+import ColumnTag from "./ColumnTag";
+import chroma from "chroma-js";
+
 export default {
     name: "ComTable",
+    components: { ColumnTag },
     props: {
         column: {
             type: Array,
@@ -63,7 +69,10 @@ export default {
             type: [Number, String],
             default: () => 1
         },
-        pageSize: [Number, String],
+        pageSize: {
+            type: [Number, String],
+            default: () => 30
+        },
         pagination: {
             type: Boolean,
             default: true
@@ -76,11 +85,49 @@ export default {
         };
     },
     computed: {
+        ...mapState("sys", ["dictionary"]),
         tableColumn() {
             return this.column.filter(v => v.table !== false);
         }
     },
+    mounted() {
+        this.initTable();
+    },
     methods: {
+        ...mapActions("sys", ["queryDict"]),
+        initTable() {
+            // 获取有字典的列
+            const columns = this.tableColumn.filter(v => v.dict);
+            for (const col of columns) {
+                // 请求字典接口
+                this.queryDict(col.dict).then(() => {
+                    const dict = this.dictionary[col.dict];
+
+                    // 字典列表放入column配置的options里，作为标签使用
+                    this.$set(
+                        col,
+                        "options",
+                        dict.map(v => ({
+                            value: v.labelValue,
+                            label: v.label
+                        }))
+                    );
+
+                    // 字典数量计算成标签颜色
+                    const scale = chroma.scale(["#409EFF", "#F56C6C"]).mode('hsl');
+                    const tagColors = {
+                        color: scale.colors(dict.length),
+                        border: scale.colors(dict.length, null).map(v =>
+                            chroma(v)
+                                .brighten(1.5)
+                                .desaturate(0.45)
+                                .hex()
+                        )
+                    };
+                    this.$set(col, "tagColors", tagColors);
+                });
+            }
+        },
         selectHandler(selection) {
             this.selection = selection;
         },

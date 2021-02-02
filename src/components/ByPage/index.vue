@@ -18,10 +18,10 @@ export default {
         if (left || right) side = (
             <div class="page-tool-side">
                 <div class="page-tool-side-left">
-                    <slot name="left"/>
+                    { left }
                 </div>
                 <div class="page-tool-side-right">
-                    <slot name="right"/>
+                    { right }
                 </div>
             </div>
         )

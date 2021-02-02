@@ -1,4 +1,5 @@
 import Mock from "mockjs";
+import * as _ from "lodash";
 
 const template = {
     status: 200
@@ -731,4 +732,56 @@ Mock.mock("/api/business/data", "get", {
             }
         ]
     }
+});
+
+Mock.mock(/\/api\/sys\/queryDictByName\?.*/, "get", option => {
+    let data = [];
+    let params = option.url.match(/(?<=\?).+$/).toString();
+    params = params.split("&");
+    params = params.map(v => v.split("="));
+    params = _.fromPairs(params);
+    if (params.name === "dev_status") {
+        data = [
+            {
+                "id": 10,
+                "name": "status_dev",
+                "label": "已开通",
+                "labelValue": "3",
+                "dictSort": 3,
+                "status": 1,
+                "description": "开发者状态"
+            },
+            {
+                "id": 11,
+                "name": "status_dev",
+                "label": "帐号已停用",
+                "labelValue": "4",
+                "dictSort": 4,
+                "status": 1,
+                "description": "开发者状态"
+            },
+            {
+                "id": 8,
+                "name": "status_dev",
+                "label": "待审核",
+                "labelValue": "1",
+                "dictSort": 1,
+                "status": 1,
+                "description": "开发者状态"
+            },
+            {
+                "id": 9,
+                "name": "status_dev",
+                "label": "未通过审核",
+                "labelValue": "2",
+                "dictSort": 2,
+                "status": 1,
+                "description": "开发者状态"
+            }
+        ]
+    }
+    return {
+        ...template,
+        data
+    };
 });

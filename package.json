@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "axios": "^0.21.0",
+        "chroma-js": "^2.1.0",
         "core-js": "^3.6.5",
         "crypto-js": "^4.0.0",
         "date-fns": "^2.16.1",

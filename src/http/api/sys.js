@@ -6,4 +6,4 @@ const path = "/api/sys";
 export const queryMenu = params => http.get(path + "/menu", { params });
 
 // 字典
-export const queryDict = name => http.get(path + "/dict", { name });
+export const queryDict = name => http.get(path + "/queryDictByName", { params: { name } });

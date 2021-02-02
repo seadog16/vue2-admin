@@ -2,7 +2,8 @@
     by-page
         by-table(
             :column="column"
-            :data="data")
+            :data="data"
+            :total="page.total")
 </template>
 
 <script>
@@ -76,18 +77,21 @@ export default {
                 {
                     prop: "status",
                     label: "状态",
-                    slot: "status",
                     search: true,
                     dialog: false,
-                    options: []
+                    dict: "dev_status"
                 }
             ],
-            data: []
+            data: [],
+            page: {
+                total: 1
+            }
         };
     },
     mounted() {
         queryData().then(res => {
             this.data = res.rows;
+            this.page.total = res.total;
         });
     }
 };
