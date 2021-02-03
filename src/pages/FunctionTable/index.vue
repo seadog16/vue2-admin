@@ -1,17 +1,17 @@
 <template lang="pug">
     by-page
-        by-table(
+        by-view(
             :column="column"
-            :data="data"
-            :total="page.total")
+            :query-api="queryBusiness")
 </template>
 
 <script>
-import { queryData } from "@/http/api/business";
+import { queryBusiness } from "@/http/api/business";
 export default {
     name: "FunctionTable",
     data() {
         return {
+            queryBusiness,
             column: [
                 {
                     prop: "id",
@@ -81,18 +81,8 @@ export default {
                     dialog: false,
                     dict: "dev_status"
                 }
-            ],
-            data: [],
-            page: {
-                total: 1
-            }
+            ]
         };
-    },
-    mounted() {
-        queryData().then(res => {
-            this.data = res.rows;
-            this.page.total = res.total;
-        });
     }
 };
 </script>

@@ -9,6 +9,7 @@ import "@/style/init.styl";
 import "@/mock";
 import ByPage from "@/components/ByPage";
 import ByTable from "@/components/ByTable";
+import ByView from "@/components/ByView";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { size: "small" });
@@ -17,6 +18,7 @@ Vue.use(ContentMenu);
 // 自定义组件
 Vue.component("ByPage", ByPage);
 Vue.component("ByTable", ByTable);
+Vue.component("ByView", ByView);
 
 export default new Vue({
     router,

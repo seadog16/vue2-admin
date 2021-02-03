@@ -38,7 +38,7 @@
             :total="total"
             :current-page="currentPage"
             :page-size="pageSize"
-            :page-sizes="[30, 60, 100]"
+            :page-sizes="[20, 50, 100, 200]"
             @size-change="$emit('size-change', $event)"
             @current-change="$emit('current-change', $event)")
 </template>
@@ -77,7 +77,7 @@ export default {
             type: Boolean,
             default: true
         },
-        labelWidth: String
+        queryData: Function
     },
     data() {
         return {

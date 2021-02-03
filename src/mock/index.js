@@ -47,7 +47,7 @@ Mock.mock("/api/sys/menu", "get", {
     ]
 });
 
-Mock.mock("/api/business/data", "get", {
+Mock.mock(/^\/api\/business\/data/, "get", {
     ...template,
     data: {
         total: 13,
