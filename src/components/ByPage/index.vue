@@ -15,16 +15,18 @@ export default {
     render(h, context) {
         const { left, right } = context.slots();
         let side;
-        if (left || right) side = (
-            <div class="page-tool-side">
-                <div class="page-tool-side-left">
-                    { left }
+        if (left || right) {
+            side = (
+                <div class="page-tool">
+                    <div class="page-tool-left">
+                        { left }
+                    </div>
+                    <div class="page-tool-right">
+                        { right }
+                    </div>
                 </div>
-                <div class="page-tool-side-right">
-                    { right }
-                </div>
-            </div>
-        )
+            )
+        }
         return (
             <div class="page">
                 { side }
@@ -46,17 +48,19 @@ export default {
 
     &-tool
         margin-bottom 10px
+        height 32px
+        box-sizing border-box
+        justify-content space-between
 
-        &-side
-            justify-content space-around
-            margin-bottom 10px
+        &-left
+            flex auto
 
-            &-left
-                flex auto
+        &-right
+            flex auto
+            text-align right
 
-            &-right
-                flex auto
-                text-align right
+    &-tool + &-contain
+        height calc(100% - 42px)
 
 
     &-contain

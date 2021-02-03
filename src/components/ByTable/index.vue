@@ -1,11 +1,11 @@
 <template lang="pug">
-    .table(:style="pagination?'height:calc(100% - 36px)':''")
-        el-table(
+    .table
+        el-table.table-main(
             ref="table"
             :data="data"
             :row-key="rowKey"
+            :height="pagination?'calc(100% - 42px)':'100%'"
             stripe
-            height="100%"
             border
             :row-class-name="rowClassName"
             @selection-change="selectHandler"
@@ -32,7 +32,7 @@
                     v-bind="item.tableProperties")
             template(slot="empty")
                 slot(name="empty")
-        el-pagination.pagination(
+        el-pagination.table-pagination(
             v-if="pagination"
             layout="prev, pager, next, sizes, jumper, total"
             :total="total"
@@ -174,10 +174,13 @@ export default {
 <style scoped lang="stylus">
 .table
     height 100%
-    margin-bottom -20px
 
-.pagination
-    text-align center
-    margin-top 10px
-    height 32px
+    &-main
+        height 100%
+
+    &-pagination
+        text-align center
+        margin-top 10px
+        height 32px
+        box-sizing border-box
 </style>

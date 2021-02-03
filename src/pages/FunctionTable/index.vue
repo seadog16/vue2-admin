@@ -1,8 +1,8 @@
 <template lang="pug">
-    by-page
-        by-view(
-            :column="column"
-            :query-api="queryBusiness")
+    by-view(
+        :column="column"
+        :query-api="queryBusiness"
+        :search-filter="searchFilter")
 </template>
 
 <script>
@@ -12,62 +12,33 @@ export default {
     data() {
         return {
             queryBusiness,
+            searchFilter: ["id", "phone", "company", "superiorUnits", "status"],
             column: [
                 {
                     prop: "id",
-                    label: "账号ID",
-                    search: true,
-                    component: "id",
-                    slot: "id",
-                    disabled: true
+                    label: "账号ID"
                 },
                 {
                     prop: "phone",
-                    label: "绑定手机",
-                    search: true,
-                    disabled: true
+                    label: "绑定手机"
                 },
                 {
                     prop: "company",
-                    label: "开发者名称",
-                    search: true,
-                    rules: {
-                        required: true,
-                        message: "开发者名称必填"
-                    },
-                    componentProperties: {
-                        maxlength: 60,
-                        showWordLimit: true
-                    }
+                    label: "开发者名称"
                 },
                 {
                     prop: "superiorUnits",
-                    label: "所属单位",
-                    search: true,
-                    rules: {
-                        required: true,
-                        message: "所属单位必填"
-                    },
-                    componentProperties: {
-                        maxlength: 60,
-                        showWordLimit: true
-                    }
+                    label: "所属单位"
                 },
                 {
                     prop: "itemCount",
                     label: "授权事项数",
-                    component: "elInputNumber",
-                    componentProperties: {
-                        min: 1,
-                        max: 100,
-                        stepStrictly: true
-                    }
+                    component: "elInputNumber"
                 },
                 {
                     prop: "onlineItemCount",
                     label: "已上线事项数",
-                    component: "elInputNumber",
-                    disabled: true
+                    component: "elInputNumber"
                 },
                 {
                     prop: "auditTime",
@@ -77,7 +48,6 @@ export default {
                 {
                     prop: "status",
                     label: "状态",
-                    search: true,
                     dialog: false,
                     dict: "dev_status"
                 }
