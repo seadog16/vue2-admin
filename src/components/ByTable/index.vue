@@ -17,10 +17,20 @@
                     v-if="item.slot"
                     :name="item.slot")
                 el-table-column(
+                    v-else-if="item.options || item.dict"
                     :label="item.label"
                     :prop="item.prop"
-                    v-else-if="item.options || item.dict")
+                    v-bind="item.properties&&item.properties.table")
                     column-tag(
+                        slot-scope="{row}"
+                        :item="item"
+                        :row="row")
+                el-table-column(
+                    v-else-if="item.link || item.click"
+                    :label="item.label"
+                    :prop="item.prop"
+                    v-bind="item.properties&&item.properties.table")
+                    column-link(
                         slot-scope="{row}"
                         :item="item"
                         :row="row")
@@ -29,7 +39,7 @@
                     show-overflow-tooltip
                     :label="item.label"
                     :prop="item.prop"
-                    v-bind="item.tableProperties")
+                    v-bind="item.properties&&item.properties.table")
             template(slot="empty")
                 slot(name="empty")
         el-pagination.table-pagination(
@@ -46,11 +56,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import ColumnTag from "./ColumnTag";
+import ColumnLink from "./ColumnLink";
 import chroma from "chroma-js";
 
 export default {
     name: "ComTable",
-    components: { ColumnTag },
+    components: { ColumnTag, ColumnLink },
     props: {
         column: {
             type: Array,

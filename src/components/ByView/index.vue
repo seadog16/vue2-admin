@@ -2,8 +2,18 @@
     by-page
         template(#left)
             by-table-search(
-                :column="searchColumn")
+                ref="tableSearch"
+                :column="searchColumn"
+                @set="setSearch"
+                @search="queryData")
         template(#right)
+        template(#tag)
+            el-tag.tag(
+                v-for="(item, key) in searchForm"
+                :key="key"
+                closable
+                effect="plain"
+                @close="closeTag(key)") {{itemFilter(item,key)}}
         by-table(
             :column="column"
             :data="data"
@@ -16,6 +26,7 @@
 </template>
 
 <script>
+import * as _ from "lodash";
 export default {
     name: "ByView",
     props: {
@@ -37,7 +48,8 @@ export default {
                 total: 1,
                 pageSize: 20
             },
-            loading: false
+            loading: false,
+            searchForm: {}
         };
     },
     computed: {
@@ -80,11 +92,32 @@ export default {
         currentChange(page) {
             this.page.page = page;
             this.queryData();
+        },
+        setSearch(key, value) {
+            if (_.isEmpty(value)) {
+                this.$delete(this.searchForm, key);
+            } else {
+                this.searchForm[key] = value;
+            }
+        },
+        itemFilter(val, key) {
+            const item = this.column.find(v => v.prop === key);
+            const value = item.options?.find(v => v.value === val)?.label || val;
+            return item.label + ": " + value;
+        },
+        closeTag(key) {
+            if (this.$refs.tableSearch.label === key) {
+                this.$refs.tableSearch.clear();
+            } else {
+                this.$delete(this.searchForm, key);
+            }
+            this.queryData();
         }
     }
 };
 </script>
 
 <style scoped lang="stylus">
-
+.tag + .tag
+    margin-left 5px
 </style>

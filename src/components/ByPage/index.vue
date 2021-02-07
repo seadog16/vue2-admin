@@ -13,7 +13,7 @@ export default {
     name: "ByPage",
     functional: true,
     render(h, context) {
-        const { left, right } = context.slots();
+        const { left, right, tag } = context.slots();
         let side;
         if (left || right) {
             side = (
@@ -27,10 +27,22 @@ export default {
                 </div>
             )
         }
+        let templateTag;
+        if (tag) {
+            templateTag = (
+                <div class="page-tag">
+                    { tag }
+                </div>
+            )
+        }
+        let height = !side && !tag
+            ? "100%"
+            : `calc(100%${side ? " - 42px" : ""}${tag ? " - 35px" : ""})`;
         return (
             <div class="page">
                 { side }
-                <div class="page-contain">
+                { templateTag }
+                <div class="page-contain" style={ "height:" + height }>
                     { context.children }
                 </div>
             </div>
@@ -59,9 +71,9 @@ export default {
             flex auto
             text-align right
 
-    &-tool + &-contain
-        height calc(100% - 42px)
-
+    &-tag
+        height 24px
+        margin-bottom 10px
 
     &-contain
         position relative

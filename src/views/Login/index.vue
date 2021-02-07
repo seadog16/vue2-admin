@@ -41,7 +41,7 @@ export default {
         return {
             loading: false,
             title: document.title,
-            form: { user: "", pass: "" },
+            form: { user: "admin", pass: "admin" },
             passErrorMsg: "",
             submitLoad: false,
             savePass: false

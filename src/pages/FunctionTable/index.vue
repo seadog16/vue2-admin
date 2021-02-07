@@ -16,7 +16,15 @@ export default {
             column: [
                 {
                     prop: "id",
-                    label: "账号ID"
+                    label: "账号ID",
+                    link(row) {
+                        return `http://www.baidu.com?p=${row.id}`;
+                    },
+                    properties: {
+                        link: {
+                            target: "_blank"
+                        }
+                    }
                 },
                 {
                     prop: "phone",
@@ -24,7 +32,11 @@ export default {
                 },
                 {
                     prop: "company",
-                    label: "开发者名称"
+                    label: "开发者名称",
+                    click(row) {
+                        console.log(row);
+                        // do something
+                    }
                 },
                 {
                     prop: "superiorUnits",

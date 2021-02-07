@@ -26,7 +26,7 @@ export default {
     },
     model: {
         prop: "value",
-        event: "change"
+        event: "update"
     },
     data() {
         return {
@@ -40,7 +40,7 @@ export default {
                 return this.value;
             },
             set(val) {
-                this.$emit("change", val);
+                this.$emit("update", val);
             }
         }
     },
@@ -53,7 +53,6 @@ export default {
     methods: {
         changeComp() {
             const { component, options } = this.item;
-            console.log(this.item);
             switch (component) {
                 case "dateRange":
                     this.itemComp = "elDatePicker";

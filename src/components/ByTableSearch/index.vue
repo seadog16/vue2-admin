@@ -1,19 +1,27 @@
 <template lang="pug">
-    el-form(inline)
+    el-form(inline @submit.native.prevent="submitHandler")
         el-form-item
             el-select(
                 v-model="label"
                 filterable
                 default-first-option
-                @change="changeHandler")
+                @change="value=null")
                 el-option(
                     v-for="opt in column"
                     :key="opt.prop"
                     :value="opt.prop"
                     :label="opt.label")
         by-form-item(
-            :item="item"
-            v-model="value")
+            :item="{...item,label:''}"
+            v-model="value"
+            @change="pushSearch")
+        input(type="submit" style="display:none")
+        el-form-item
+            el-button(
+                circle
+                type="primary"
+                icon="el-icon-search"
+                @click="submitHandler")
 </template>
 
 <script>
@@ -46,8 +54,15 @@ export default {
         init() {
             this.label = this.column?.[0]?.prop;
         },
-        changeHandler() {
+        pushSearch() {
+            this.$emit("set", this.item.prop, this.value);
+        },
+        submitHandler() {
+            this.$emit("search");
+        },
+        clear() {
             this.value = null;
+            this.pushSearch();
         }
     }
 };
