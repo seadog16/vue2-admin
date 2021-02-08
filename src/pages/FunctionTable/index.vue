@@ -43,9 +43,9 @@ export default {
                     label: "所属单位"
                 },
                 {
-                    prop: "itemCount",
-                    label: "授权事项数",
-                    component: "elInputNumber"
+                    prop: "avator",
+                    label: "头像",
+                    component: "image"
                 },
                 {
                     prop: "onlineItemCount",

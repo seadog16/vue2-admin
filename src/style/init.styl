@@ -58,3 +58,24 @@ a
 
 .el-tooltip__popper
       max-width 400px
+
+.el-image
+    .image-slot
+        background $--background-color-base
+        text-align center
+
+        &:before
+            content ""
+            display inline-block
+            height 100%
+            vertical-align middle
+
+        &:after
+            content ""
+            display table
+            clear both
+
+        [class^=el-icon]
+            font-size 20px
+            color $--color-text-placeholder
+            vertical-align middle

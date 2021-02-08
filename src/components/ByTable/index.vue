@@ -35,6 +35,12 @@
                         :item="item"
                         :row="row")
                 el-table-column(
+                    v-else-if="item.component==='image'")
+                    column-image(
+                        slot-scope="{row}"
+                        :item="item"
+                        :row="row")
+                el-table-column(
                     v-else
                     show-overflow-tooltip
                     :label="item.label"
@@ -57,11 +63,12 @@
 import { mapActions, mapState } from "vuex";
 import ColumnTag from "./ColumnTag";
 import ColumnLink from "./ColumnLink";
+import ColumnImage from "./ColumnImage";
 import chroma from "chroma-js";
 
 export default {
     name: "ComTable",
-    components: { ColumnTag, ColumnLink },
+    components: { ColumnTag, ColumnLink, ColumnImage },
     props: {
         column: {
             type: Array,

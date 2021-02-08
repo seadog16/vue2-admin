@@ -156,6 +156,7 @@ $footer-height = 40px
         border-top 1px solid #f2f4f9
         box-shadow 3px 0 10px 0 rgba(183 192 206, .2)
         transition $--all-transition
+        box-sizing border-box
 
         ^[-1].menuCollapse &
             left $side-collapse-width

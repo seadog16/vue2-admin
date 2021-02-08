@@ -65,7 +65,7 @@ Mock.mock(/^\/api\/business\/data/, "get", {
                 superiorUnits: "测试的单位",
                 coverage:
                     "440100000,440200000,440300000,440400000,440500000,440600000,440700000,440800000,440900000,441200000,441300000,441400000,441500000,441600000,441700000,441800000,441900000,442000000,445100000,445200000,445300000",
-                itemCount: 1,
+                avator: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
                 businessContact: "测试的",
                 businessPhone: "18024070462",
                 technicalContact: "何涛测试的",
