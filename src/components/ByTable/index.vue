@@ -14,8 +14,8 @@
             template(
                 v-for="item in tableColumn")
                 slot(
-                    v-if="item.slot"
-                    :name="item.slot")
+                    v-if="item.tableSlot"
+                    :name="item.tableSlot")
                 el-table-column(
                     v-else-if="item.options || item.dict"
                     :label="item.label"
@@ -35,7 +35,10 @@
                         :item="item"
                         :row="row")
                 el-table-column(
-                    v-else-if="item.component==='image'")
+                    v-else-if="item.component==='image'"
+                    :label="item.label"
+                    :prop="item.prop"
+                    v-bind="item.properties&&item.properties.table")
                     column-image(
                         slot-scope="{row}"
                         :item="item"
@@ -132,12 +135,12 @@ export default {
                     );
 
                     // 字典数量计算成标签颜色
-                    const scale = chroma.scale(["#409EFF", "#F56C6C"]).mode('hsl');
+                    const scale = chroma.scale(["#409EFF", "#67C23A", "#e6a23c", "#F56C6C"]).mode('hsl');
                     const tagColors = {
                         color: scale.colors(dict.length),
                         border: scale.colors(dict.length, null).map(v =>
                             chroma(v)
-                                .brighten(1.5)
+                                .brighten(1.2)
                                 .desaturate(0.45)
                                 .hex()
                         )
@@ -148,22 +151,6 @@ export default {
         },
         selectHandler(selection) {
             this.selection = selection;
-        },
-        findColor(row, item) {
-            const { options, prop } = item;
-            const val = row[prop];
-            const index = options.findIndex(v => String(v.value) === String(val));
-            if (index > -1 && options[index].tag) {
-                const key = /^#(\w|\d){3,6}/.test(options[index].tag) ? "color" : "type";
-                return { [key]: options[index].tag };
-            } else {
-                const type = ["", "success", "info", "warning", "danger"][index % 5];
-                return { type };
-            }
-        },
-        findValue(row, item) {
-            const child = item.options.find(v => String(v.value) === String(row[item.prop]));
-            return child?.label;
         },
         rowClickHandler(row) {
             this.toggleRowSelection(row);

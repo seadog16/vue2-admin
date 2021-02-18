@@ -30,7 +30,7 @@ Mock.mock("/api/sys/menu", "get", {
         {
             id: "1",
             code: "Function",
-            uri: "",
+            uri: "/function",
             name: "主要功能",
             component: "",
             icon: "el-icon-set-up"
@@ -386,7 +386,7 @@ Mock.mock(/^\/api\/business\/data/, "get", {
                 technicalPhone: "15333333333",
                 onlineItemCount: 0,
                 auditTime: "2020-12-31 14:33:41",
-                status: 3
+                status: 4
             },
             {
                 id: 21,
@@ -461,7 +461,7 @@ Mock.mock(/^\/api\/business\/data/, "get", {
                     "测试1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
                 onlineItemCount: 0,
                 auditTime: "2020-11-19 06:23:38",
-                status: 3
+                status: 4
             },
             {
                 id: 17,

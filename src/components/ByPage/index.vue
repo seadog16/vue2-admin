@@ -62,6 +62,7 @@ export default {
         margin-bottom 10px
         height 32px
         box-sizing border-box
+        display flex
         justify-content space-between
 
         &-left

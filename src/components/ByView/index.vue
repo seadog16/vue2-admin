@@ -7,6 +7,19 @@
                 @set="setSearch"
                 @search="queryData")
         template(#right)
+            el-button(
+                circle
+                type="primary"
+                icon="el-icon-plus"
+                help="新增")
+            el-button(
+                circle
+                icon="el-icon-edit"
+                help="编辑")
+            el-button(
+                circle
+                icon="el-icon-delete"
+                help="删除")
         template(#tag)
             el-tag.tag(
                 v-for="(item, key) in searchForm"
@@ -23,6 +36,10 @@
             @size-change="sizeChange"
             @current-change="currentChange"
             v-loading="loading")
+            slot(
+                v-for="col in column"
+                :name="col.tableSlot"
+                :slot="col.tableSlot")
 </template>
 
 <script>
@@ -42,6 +59,7 @@ export default {
     },
     data() {
         return {
+            isEmpty: _.isEmpty,
             data: [],
             page: {
                 page: 1,

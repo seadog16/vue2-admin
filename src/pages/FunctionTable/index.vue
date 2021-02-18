@@ -3,6 +3,9 @@
         :column="column"
         :query-api="queryBusiness"
         :search-filter="searchFilter")
+        el-table-column(slot="phone" label="绑定手机")
+            template(slot-scope="{row}")
+                span {{row.phone}}
 </template>
 
 <script>
@@ -27,8 +30,7 @@ export default {
                     }
                 },
                 {
-                    prop: "phone",
-                    label: "绑定手机"
+                    tableSlot: "phone"
                 },
                 {
                     prop: "company",

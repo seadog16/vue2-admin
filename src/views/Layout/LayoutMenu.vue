@@ -2,6 +2,8 @@
     el-menu.menu(
         @select="changeRoute"
         :default-active="$route.fullPath"
+        :default-openeds="[$route.fullPath]"
+        unique-opened
         :collapse="menuCollapse")
         menu-item(
             v-for="(item, index) in menuTree"
