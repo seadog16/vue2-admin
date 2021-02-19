@@ -11,7 +11,8 @@
                 circle
                 type="primary"
                 icon="el-icon-plus"
-                help="新增")
+                help="新增"
+                @click="newHandler")
             el-button(
                 circle
                 icon="el-icon-edit"
@@ -40,20 +41,26 @@
                 v-for="col in column"
                 :name="col.tableSlot"
                 :slot="col.tableSlot")
+        by-dialog-form(
+            ref="dialogForm"
+            :column="dialogColumn")
 </template>
 
 <script>
+import ByTableSearch from "@/components/ByTableSearch";
+import ByDialogForm from "@/components/ByDialogForm";
 import * as _ from "lodash";
 export default {
     name: "ByView",
+    components: { ByTableSearch, ByDialogForm },
     props: {
         column: {
             type: Array,
             default: () => []
         },
-        searchFilter: {
-            type: Array,
-            default: () => []
+        filter: {
+            type: Object,
+            default: () => ({})
         },
         queryApi: Function
     },
@@ -72,7 +79,20 @@ export default {
     },
     computed: {
         searchColumn() {
-            return this.column.filter(v => this.searchFilter.includes(v.prop));
+            const { search } = this.filter;
+            if (search && search.length) {
+                return this.column.filter(v => search.includes(v.prop));
+            } else {
+                return this.column;
+            }
+        },
+        dialogColumn() {
+            const { dialog } = this.filter;
+            if (dialog && dialog.length) {
+                return this.column.filter(v => dialog.includes(v.prop));
+            } else {
+                return this.column;
+            }
         }
     },
     created() {
@@ -130,6 +150,9 @@ export default {
                 this.$delete(this.searchForm, key);
             }
             this.queryData();
+        },
+        newHandler() {
+            this.$refs.dialogForm.open({}, "新增");
         }
     }
 };

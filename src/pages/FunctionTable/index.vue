@@ -2,7 +2,7 @@
     by-view(
         :column="column"
         :query-api="queryBusiness"
-        :search-filter="searchFilter")
+        :filter="filter")
         el-table-column(slot="phone" label="绑定手机")
             template(slot-scope="{row}")
                 span {{row.phone}}
@@ -15,7 +15,10 @@ export default {
     data() {
         return {
             queryBusiness,
-            searchFilter: ["id", "phone", "company", "superiorUnits", "status"],
+            filter: {
+                search: ["id", "phone", "company", "superiorUnits", "status"],
+                dialog: ["phone", "company", "superiorUnits", "avator"]
+            },
             column: [
                 {
                     prop: "id",
@@ -30,6 +33,8 @@ export default {
                     }
                 },
                 {
+                    prop: "phone",
+                    label: "绑定手机",
                     tableSlot: "phone"
                 },
                 {
@@ -52,17 +57,16 @@ export default {
                 {
                     prop: "onlineItemCount",
                     label: "已上线事项数",
-                    component: "elInputNumber"
+                    component: "elInputNumber",
+                    default: 0
                 },
                 {
                     prop: "auditTime",
-                    label: "审核时间",
-                    dialog: false
+                    label: "审核时间"
                 },
                 {
                     prop: "status",
                     label: "状态",
-                    dialog: false,
                     dict: "dev_status"
                 }
             ]

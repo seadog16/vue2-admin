@@ -10,7 +10,7 @@ import "@/mock";
 import ByPage from "@/components/ByPage";
 import ByTable from "@/components/ByTable";
 import ByView from "@/components/ByView";
-import ByTableSearch from "@/components/ByTableSearch";
+import ByDialog from "@/components/ByDialog";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { size: "small" });
@@ -20,7 +20,7 @@ Vue.use(ContentMenu);
 Vue.component("ByPage", ByPage);
 Vue.component("ByTable", ByTable);
 Vue.component("ByView", ByView);
-Vue.component("ByTableSearch", ByTableSearch);
+Vue.component("ByDialog", ByDialog);
 
 export default new Vue({
     router,
