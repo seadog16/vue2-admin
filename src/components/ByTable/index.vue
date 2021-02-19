@@ -7,10 +7,10 @@
             :height="pagination?'calc(100% - 42px)':'100%'"
             stripe
             border
+            highlight-current-row
             :row-class-name="rowClassName"
-            @selection-change="selectHandler"
-            @current-change="$emit('select-change', $event)"
-            @row-click="rowClickHandler")
+            @selection-change="$emit('selection-change', $event)"
+            @current-change="$emit('current-change', $event)")
             template(
                 v-for="item in tableColumn")
                 slot(
@@ -59,7 +59,7 @@
             :page-size="pageSize"
             :page-sizes="[20, 50, 100, 200]"
             @size-change="$emit('size-change', $event)"
-            @current-change="$emit('current-change', $event)")
+            @current-change="$emit('page-change', $event)")
 </template>
 
 <script>
@@ -99,11 +99,6 @@ export default {
             default: true
         },
         queryData: Function
-    },
-    data() {
-        return {
-            selection: []
-        };
     },
     computed: {
         ...mapState("sys", ["dictionary"]),
@@ -149,28 +144,10 @@ export default {
                 });
             }
         },
-        selectHandler(selection) {
-            this.selection = selection;
-        },
-        rowClickHandler(row) {
-            this.toggleRowSelection(row);
-        },
         rowClassName({ rowIndex }) {
             if (rowIndex === 5) {
                 return "abc";
             }
-        },
-        dialogOpen(title, data) {
-            return this.$refs.dialog.open(title, data);
-        },
-        setCurrentRow(val) {
-            this.$refs.table.setCurrentRow(val);
-        },
-        toggleRowSelection(row, selected) {
-            this.$refs.table.toggleRowSelection(row, selected);
-        },
-        clearSelection() {
-            this.$refs.table.clearSelection();
         }
     }
 };
@@ -182,6 +159,25 @@ export default {
 
     &-main
         height 100%
+
+        //& >>> tr.current-row
+        //    & > td
+        //        background-color $--color-primary!important
+        //        border-right-color lighten($--color-primary, 10)
+        //        color $--color-white
+        //
+        //    &:hover > td
+        //        background-color lighten($--color-primary, 3)!important
+        //
+        //    .el-link
+        //        color #fff000
+        //
+        //        &.is-underline:hover:after
+        //            border-color: #fff000
+        //
+        & >>> .el-link
+            font-weight inherit
+            font-size inherit
 
     &-pagination
         text-align center

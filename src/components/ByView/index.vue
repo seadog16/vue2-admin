@@ -17,11 +17,13 @@
                 circle
                 icon="el-icon-edit"
                 help="编辑"
+                :disabled="isEmpty(selection)"
                 @click="editHandler")
             el-button(
                 circle
                 icon="el-icon-delete"
-                help="删除")
+                help="删除"
+                :disabled="isEmpty(selection)")
         template(#tag)
             el-tag.tag(
                 v-for="(item, key) in searchForm"
@@ -36,7 +38,8 @@
             :current-page.sync="page.page"
             :page-size.sync="page.pageSize"
             @size-change="sizeChange"
-            @current-change="currentChange"
+            @page-change="pageChange"
+            @current-change="selection=$event"
             v-loading="loading")
             slot(
                 v-for="col in column"
@@ -46,7 +49,8 @@
         by-dialog-form(
             ref="dialogForm"
             :column="dialogColumn"
-            @closed="dialogColumnProperties={}")
+            @closed="dialogColumnProperties={}"
+            @submit="(param, done)=>$emit('submit', param, done)")
 </template>
 
 <script>
@@ -78,6 +82,7 @@ export default {
             },
             loading: false,
             searchForm: {},
+            selection: {},
             dialogColumnProperties: {}
         };
     },
@@ -142,7 +147,7 @@ export default {
             this.page.pageSize = pageSize;
             this.queryData();
         },
-        currentChange(page) {
+        pageChange(page) {
             this.page.page = page;
             this.queryData();
         },
@@ -172,7 +177,7 @@ export default {
         },
         editHandler() {
             this.$emit("dialog-edit", this.dialogColumnProperties);
-            this.$refs.dialogForm.open({}, "编辑");
+            this.$refs.dialogForm.open(this.selection, "编辑");
         }
     }
 };

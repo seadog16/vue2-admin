@@ -4,7 +4,8 @@
         :query-api="queryBusiness"
         :filter="filter"
         @dialog-new="dialogNewHandler"
-        @dialog-edit="dialogEditHandler")
+        @dialog-edit="dialogEditHandler"
+        @submit="submitHandler")
         el-table-column(slot="phone" label="绑定手机")
             template(slot-scope="{row}")
                 span {{row.phone}}
@@ -92,6 +93,9 @@ export default {
         },
         dialogEditHandler(col) {
             this.$set(col, "id", { readonly: true });
+        },
+        submitHandler(data, done) {
+            console.log(data, done);
         }
     }
 };

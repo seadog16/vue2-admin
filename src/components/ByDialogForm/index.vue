@@ -24,7 +24,7 @@
                         :item="item"
                         v-model="model[item.prop]"
                         :property="item.properties && item.properties.dialog"
-                        :rules="item.properties && item.properties.dialog.rules")
+                        :rules="item.properties && item.properties.dialog && item.properties.dialog.rules")
         template(#footer)
             el-button(@click="visible=false") 取消
             el-button(
@@ -63,6 +63,7 @@ export default {
                 closed: () => {
                     this.$set(this, "model", {});
                     this.$refs.form.resetFields();
+                    this.loading = false;
                     this.$emit("closed");
                 }
             };
