@@ -2,7 +2,6 @@
     by-dialog(
         :visible.sync="visible"
         :title="title"
-        :width="width"
         v-on="ownListener")
         slot(name="tip" :model="model")
         el-form(
@@ -12,14 +11,20 @@
             @submit.native.prevent="submitHandler")
             el-row
                 el-col(
-                    :span="item.wide?24:12"
                     v-for="item in column"
+                    :span="item.wide?24:12"
+                    v-if="!(item.properties && item.properties.dialog && item.properties.dialog.visible===false)"
                     :key="item.prop")
                     slot(
-                        v-if="item.dSlot"
-                        :name="item.dSlot"
+                        v-if="item.slot && item.slot.dialog"
+                        :name="item.slot && item.slot.dialog"
                         :row="model")
-                    by-form-item(v-else :item="item" v-model="model[item.prop]")
+                    by-form-item(
+                        v-else
+                        :item="item"
+                        v-model="model[item.prop]"
+                        :property="item.properties && item.properties.dialog"
+                        :rules="item.properties && item.properties.dialog.rules")
         template(#footer)
             el-button(@click="visible=false") 取消
             el-button(
@@ -41,8 +46,7 @@ export default {
         labelWidth: {
             type: String,
             default: "120px"
-        },
-        width: String
+        }
     },
     data() {
         return {
@@ -65,8 +69,9 @@ export default {
         }
     },
     methods: {
-        open(data, option) {
+        open(data, title) {
             this.visible = true;
+            this.title = title;
             this.column.forEach(v => {
                 if (v.default) {
                     const isFunction = v.default instanceof Function;
@@ -78,13 +83,6 @@ export default {
                     if (Object.prototype.hasOwnProperty.call(data, i)) {
                         this.$set(this.model, i, data[i]);
                     }
-                }
-            }
-            if (option) {
-                if (typeof option === "string") {
-                    this.title = option;
-                } else {
-                    this.title = option.title;
                 }
             }
         },

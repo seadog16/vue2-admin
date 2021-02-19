@@ -1,8 +1,11 @@
 <template lang="pug">
     el-form-item.form-item(
         :label="item.label"
-        :prop="item.prop")
+        :prop="item.prop"
+        :rules="rules")
+        span(v-if="property && property.readonly") {{v}}
         component(
+            v-else
             :is="itemComp"
             v-bind="itemProp"
             v-model.trim="v"
@@ -22,7 +25,9 @@ export default {
     name: "ByFormItem",
     props: {
         item: Object,
-        value: [String, Number, Array, Object]
+        value: [String, Number, Array, Object],
+        property: Object,
+        rules: Array
     },
     model: {
         prop: "value",
@@ -60,6 +65,7 @@ export default {
                         type: "daterange",
                         valueFormat: "yyyy-MM-dd"
                     };
+                    if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
                     break;
                 case "dateTimeRange":
                     this.itemComp = "elDatePicker";
@@ -67,6 +73,7 @@ export default {
                         type: "datetimerange",
                         valueFormat: "yyyy-MM-dd HH:mm:ss"
                     };
+                    if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
                     break;
                 case "textArea":
                     this.itemComp = "elInput";
@@ -74,6 +81,7 @@ export default {
                         type: "textarea",
                         rows: 4
                     };
+                    if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
                     break;
                 case "switch":
                     this.itemComp = "elSwitch";
@@ -83,23 +91,24 @@ export default {
                         activeText: "是",
                         inactiveText: "否"
                     };
+                    if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
                     break;
                 default:
                     if (component) {
                         this.itemComp = component;
-                    } else if (options) {
+                    } else {
+                        this.itemComp = "elInput";
+                    }
+                    if (options) {
                         this.itemComp = "elSelect";
                         this.itemProp = {
                             filterable: true,
                             defaultFirstOption: true
                         };
-                    } else {
-                        this.itemComp = "elInput";
                     }
+                    if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
             }
         }
     }
 };
 </script>
-<style scoped lang="stylus">
-</style>

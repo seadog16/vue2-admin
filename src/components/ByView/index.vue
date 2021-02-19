@@ -16,7 +16,8 @@
             el-button(
                 circle
                 icon="el-icon-edit"
-                help="编辑")
+                help="编辑"
+                @click="editHandler")
             el-button(
                 circle
                 icon="el-icon-delete"
@@ -39,11 +40,13 @@
             v-loading="loading")
             slot(
                 v-for="col in column"
-                :name="col.tableSlot"
-                :slot="col.tableSlot")
+                v-if="col.slot && col.slot.table"
+                :name="col.slot.table"
+                :slot="col.slot.table")
         by-dialog-form(
             ref="dialogForm"
-            :column="dialogColumn")
+            :column="dialogColumn"
+            @closed="dialogColumnProperties={}")
 </template>
 
 <script>
@@ -74,25 +77,37 @@ export default {
                 pageSize: 20
             },
             loading: false,
-            searchForm: {}
+            searchForm: {},
+            dialogColumnProperties: {}
         };
     },
     computed: {
         searchColumn() {
             const { search } = this.filter;
+            const column = _.cloneDeep(this.column);
             if (search && search.length) {
-                return this.column.filter(v => search.includes(v.prop));
+                return column.filter(v => search.includes(v.prop));
             } else {
-                return this.column;
+                return column;
             }
         },
         dialogColumn() {
             const { dialog } = this.filter;
+            let column = _.cloneDeep(this.column);
             if (dialog && dialog.length) {
-                return this.column.filter(v => dialog.includes(v.prop));
-            } else {
-                return this.column;
+                column = column.filter(v => dialog.includes(v.prop));
             }
+            for (const i in this.dialogColumnProperties) {
+                if (Object.prototype.hasOwnProperty.call(this.dialogColumnProperties, i)) {
+                    const item = column.find(v => v.prop === i);
+                    if (item) {
+                        if (!item.properties) item.properties = { dialog: {} };
+                        if (!item.properties.dialog) item.properties.dialog = {};
+                        item.properties.dialog = { ...item.properties.dialog, ...this.dialogColumnProperties[i] };
+                    }
+                }
+            }
+            return column;
         }
     },
     created() {
@@ -152,7 +167,12 @@ export default {
             this.queryData();
         },
         newHandler() {
+            this.$emit("dialog-new", this.dialogColumnProperties);
             this.$refs.dialogForm.open({}, "新增");
+        },
+        editHandler() {
+            this.$emit("dialog-edit", this.dialogColumnProperties);
+            this.$refs.dialogForm.open({}, "编辑");
         }
     }
 };

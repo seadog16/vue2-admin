@@ -14,13 +14,13 @@
             template(
                 v-for="item in tableColumn")
                 slot(
-                    v-if="item.tableSlot"
-                    :name="item.tableSlot")
+                    v-if="item.slot && item.slot.table"
+                    :name="item.slot && item.slot.table")
                 el-table-column(
                     v-else-if="item.options || item.dict"
                     :label="item.label"
                     :prop="item.prop"
-                    v-bind="item.properties&&item.properties.table")
+                    v-bind="item.properties && item.properties.table")
                     column-tag(
                         slot-scope="{row}"
                         :item="item"

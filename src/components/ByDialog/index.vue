@@ -6,7 +6,8 @@
         append-to-body
         :close-on-click-modal="false"
         :fullscreen="fullscreen"
-        v-on="$listeners")
+        v-on="$listeners"
+        destroy-on-close)
         slot(name="footer" slot="footer")
         slot
         .tableInside(v-if="$slots.table")

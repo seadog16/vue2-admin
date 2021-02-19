@@ -2,7 +2,9 @@
     by-view(
         :column="column"
         :query-api="queryBusiness"
-        :filter="filter")
+        :filter="filter"
+        @dialog-new="dialogNewHandler"
+        @dialog-edit="dialogEditHandler")
         el-table-column(slot="phone" label="绑定手机")
             template(slot-scope="{row}")
                 span {{row.phone}}
@@ -17,7 +19,7 @@ export default {
             queryBusiness,
             filter: {
                 search: ["id", "phone", "company", "superiorUnits", "status"],
-                dialog: ["phone", "company", "superiorUnits", "avator"]
+                dialog: ["id", "phone", "company", "superiorUnits", "avator"]
             },
             column: [
                 {
@@ -35,7 +37,9 @@ export default {
                 {
                     prop: "phone",
                     label: "绑定手机",
-                    tableSlot: "phone"
+                    slot: {
+                        table: "phone"
+                    }
                 },
                 {
                     prop: "company",
@@ -43,6 +47,16 @@ export default {
                     click(row) {
                         console.log(row);
                         // do something
+                    },
+                    properties: {
+                        dialog: {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: "开发者名称必填"
+                                }
+                            ]
+                        }
                     }
                 },
                 {
@@ -71,6 +85,14 @@ export default {
                 }
             ]
         };
+    },
+    methods: {
+        dialogNewHandler(col) {
+            this.$set(col, "id", { visible: false });
+        },
+        dialogEditHandler(col) {
+            this.$set(col, "id", { readonly: true });
+        }
     }
 };
 </script>
