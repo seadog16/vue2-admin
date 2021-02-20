@@ -21,8 +21,10 @@
 </template>
 
 <script>
+import ByUploadImage from "@/components/ByUploadImage";
 export default {
     name: "ByFormItem",
+    components: { ByUploadImage },
     props: {
         item: Object,
         value: [String, Number, Array, Object],
@@ -92,6 +94,12 @@ export default {
                         inactiveText: "否"
                     };
                     if (this.property) this.itemProp = { ...this.itemProp, ...this.property };
+                    break;
+                case "image":
+                    this.itemComp = "ByUploadImage";
+                    this.itemProp = {
+                        src: this.v
+                    };
                     break;
                 default:
                     if (component) {

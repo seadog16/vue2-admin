@@ -1,13 +1,12 @@
 <template lang="pug">
     el-dialog.dialog(
+        v-if="life"
         :visible.sync="v"
         v-bind="$attrs"
-        :width="width"
         append-to-body
         :close-on-click-modal="false"
         :fullscreen="fullscreen"
-        v-on="$listeners"
-        destroy-on-close)
+        v-on="$listeners")
         slot(name="footer" slot="footer")
         slot
         .tableInside(v-if="$slots.table")
@@ -23,15 +22,12 @@ export default {
     name: "ByDialog",
     inheritAttrs: false,
     props: {
-        visible: Boolean,
-        width: {
-            type: String,
-            default: "650px"
-        }
+        visible: Boolean
     },
     data() {
         return {
-            fullscreen: false
+            fullscreen: false,
+            life: false
         };
     },
     computed: {
@@ -41,6 +37,17 @@ export default {
             },
             set(val) {
                 this.$emit("update:visible", val);
+            }
+        }
+    },
+    watch: {
+        v(val) {
+            if (val) {
+                this.life = true;
+            } else {
+                setTimeout(() => {
+                    this.life = false;
+                }, 250);
             }
         }
     }

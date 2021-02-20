@@ -2,7 +2,8 @@
     by-dialog(
         :visible.sync="visible"
         :title="title"
-        v-on="ownListener")
+        v-on="ownListener"
+        :width="dialogWidth")
         slot(name="tip" :model="model")
         el-form(
             ref="form"
@@ -46,6 +47,10 @@ export default {
         labelWidth: {
             type: String,
             default: "120px"
+        },
+        dialogWidth: {
+            type: String,
+            default: "650px"
         }
     },
     data() {
