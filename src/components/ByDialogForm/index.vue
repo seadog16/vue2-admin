@@ -66,7 +66,7 @@ export default {
             return {
                 ...this.$listeners,
                 closed: () => {
-                    this.$set(this, "model", {});
+                    this.model = {};
                     this.$refs.form.resetFields();
                     this.loading = false;
                     this.$emit("closed");

@@ -47,7 +47,7 @@ export default {
             } else {
                 setTimeout(() => {
                     this.life = false;
-                }, 250);
+                }, 350);
             }
         }
     }
