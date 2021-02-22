@@ -47,7 +47,7 @@ Mock.mock("/api/sys/menu", "get", {
     ]
 });
 
-Mock.mock(/^\/api\/business\/data/, "get", {
+Mock.mock(/^\/api\/business\/list/, "get", {
     ...template,
     data: {
         total: 30,
@@ -810,4 +810,8 @@ Mock.mock(/\/api\/sys\/queryDictByName\?.*/, "get", option => {
         ...template,
         data
     };
+});
+
+Mock.mock(/^\/api\/business\/remove/, "post", {
+    ...template
 });

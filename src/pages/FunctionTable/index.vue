@@ -1,7 +1,7 @@
 <template lang="pug">
     by-view(
         :column="column"
-        :query-api="queryBusiness"
+        :api="api"
         :filter="filter"
         @dialog-new="dialogNewHandler"
         @dialog-edit="dialogEditHandler"
@@ -12,12 +12,15 @@
 </template>
 
 <script>
-import { queryBusiness } from "@/http/api/business";
+import { businessList, businessRemove } from "@/http/api/business";
 export default {
     name: "FunctionTable",
     data() {
         return {
-            queryBusiness,
+            api: {
+                list: businessList,
+                remove: businessRemove
+            },
             filter: {
                 search: ["id", "phone", "company", "superiorUnits", "status"],
                 dialog: ["id", "phone", "company", "superiorUnits", "avator"]

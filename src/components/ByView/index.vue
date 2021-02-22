@@ -23,7 +23,12 @@
                 circle
                 icon="el-icon-delete"
                 help="删除"
-                :disabled="isEmpty(selection)")
+                :disabled="isEmpty(selection)"
+                @click="removeHandler")
+            el-button(
+                circle
+                icon="el-icon-folder-delete"
+                help="批量删除")
         template(#tag)
             el-tag.tag(
                 v-for="(item, key) in searchForm"
@@ -53,7 +58,7 @@
             @submit="(param, done)=>$emit('submit', param, done)")
 </template>
 
-<script>
+<script lang="jsx">
 import ByTableSearch from "@/components/ByTableSearch";
 import ByDialogForm from "@/components/ByDialogForm";
 import * as _ from "lodash";
@@ -69,7 +74,7 @@ export default {
             type: Object,
             default: () => ({})
         },
-        queryApi: Function
+        api: Object
     },
     data() {
         return {
@@ -120,13 +125,14 @@ export default {
     },
     methods: {
         queryData() {
-            if (this.queryApi) {
+            if (this.api && this.api.list) {
                 this.loading = true;
-                this.queryApi({
-                    pageIndex: this.page.page,
-                    pageSize: this.page.pageSize,
-                    obj: {}
-                })
+                this.api
+                    .list({
+                        pageIndex: this.page.page,
+                        pageSize: this.page.pageSize,
+                        obj: {}
+                    })
                     .then(res => {
                         const { rows, total } = res;
                         const { pageSize, page } = this.page;
@@ -178,6 +184,14 @@ export default {
         editHandler() {
             this.$emit("dialog-edit", this.dialogColumnProperties);
             this.$refs.dialogForm.open(this.selection, "编辑");
+        },
+        removeHandler() {
+            if (this.api && this.api.remove) {
+                const html = (<p>确认删除 <span style="color:#F56C6C">{this.selection.id}</span> 吗?</p>);
+                this.$confirm(html, {
+                    type: "warning"
+                }).then(() => this.api.remove({ id: this.selection.id }));
+            }
         }
     }
 };

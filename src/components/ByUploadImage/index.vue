@@ -129,16 +129,17 @@ export default {
         &-tools
             width 100%
             height 30%
-            background-image linear-gradient(transparent, rgba(0, 0, 0, .5), rgba(0, 0, 0, .75))
+            background-image linear-gradient(transparent 0, rgba(0, 0, 0, .35) 50%, rgba(0, 0, 0, .75) 85%)
             position absolute
             left 0
-            bottom -@height
-            transition bottom 250ms
+            bottom 0
+            transition opacity 300ms
             display flex
             justify-content space-evenly
+            opacity 0
 
             ^[-1]:hover &
-                bottom 0
+                opacity 1
 
             & >>> .el-button--text
                 color $--color-white

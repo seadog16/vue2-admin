@@ -26,6 +26,13 @@ http.interceptors.response.use(
         const { data, status, message } = res.data;
         switch (status) {
             case 200:
+                if (res.config.onsuccess) {
+                    if (typeof res.config.onsuccess === "string") {
+                        vm.$message({ message: res.config.onsuccess, type: "success" });
+                    } else {
+                        vm.$message({ message: "操作成功", type: "success" });
+                    }
+                }
                 return data;
             case 40301:
                 if (!unAuth) {
@@ -46,5 +53,4 @@ http.interceptors.response.use(
         return Promise.reject(err);
     }
 );
-
 export default http;
