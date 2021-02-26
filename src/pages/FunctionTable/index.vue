@@ -1,14 +1,22 @@
 <template lang="pug">
     by-view(
+        ref="view"
         :column="column"
         :api="api"
         :filter="filter"
         @dialog-new="dialogNewHandler"
         @dialog-edit="dialogEditHandler"
-        @submit="submitHandler")
-        el-table-column(slot="phone" label="绑定手机")
+        @submit="submitHandler"
+        @sort-change="sortChange"
+        buttons-layout="new,edit,delete")
+        el-button(circle icon="el-icon-upload2" help="导入")
+        el-button(circle icon="el-icon-download" help="导出")
+        el-table-column(slot="tablePhone" label="绑定手机")
             template(slot-scope="{row}")
                 span {{row.phone}}
+        template(#dialogPhone="row")
+            el-form-item(label="绑定手机" prop="phone")
+                el-input-number(v-model="row.phone")
 </template>
 
 <script>
@@ -23,7 +31,7 @@ export default {
             },
             filter: {
                 search: ["id", "phone", "company", "superiorUnits", "status"],
-                dialog: ["id", "phone", "company", "superiorUnits", "avator"]
+                dialog: ["id", "phone", "company", "superiorUnits", "avator", "status"]
             },
             column: [
                 {
@@ -42,7 +50,8 @@ export default {
                     prop: "phone",
                     label: "绑定手机",
                     slot: {
-                        table: "phone"
+                        table: "tablePhone",
+                        dialog: "dialogPhone"
                     }
                 },
                 {
@@ -85,7 +94,16 @@ export default {
                 {
                     prop: "status",
                     label: "状态",
-                    dict: "dev_status"
+                    dict: "dev_status",
+                    properties: {
+                        table: {
+                            filters: [{ text: "通过", value: "0" }],
+                            filterMethod(val, row, column) {
+                                console.log(val, row, column);
+                            },
+                            sortable: "custom"
+                        }
+                    }
                 }
             ]
         };
@@ -99,6 +117,9 @@ export default {
         },
         submitHandler(data, done) {
             console.log(data, done);
+        },
+        sortChange({ column, prop, order }) {
+            console.log(column, prop, order);
         }
     }
 };

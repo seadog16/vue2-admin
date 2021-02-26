@@ -10,7 +10,8 @@
             highlight-current-row
             :row-class-name="rowClassName"
             @selection-change="$emit('selection-change', $event)"
-            @current-change="$emit('current-change', $event)")
+            @current-change="$emit('current-change', $event)"
+            @sort-change="$emit('sort-change', $event)")
             template(
                 v-for="item in tableColumn")
                 slot(
@@ -70,7 +71,7 @@ import ColumnImage from "./ColumnImage";
 import chroma from "chroma-js";
 
 export default {
-    name: "ComTable",
+    name: "ByTable",
     components: { ColumnTag, ColumnLink, ColumnImage },
     props: {
         column: {
@@ -98,7 +99,7 @@ export default {
             type: Boolean,
             default: true
         },
-        queryData: Function
+        box: Boolean
     },
     computed: {
         ...mapState("sys", ["dictionary"]),

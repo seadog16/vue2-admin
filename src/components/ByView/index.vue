@@ -8,27 +8,27 @@
                 @search="queryData")
         template(#right)
             el-button(
+                v-if="buttonsLayoutComputed.includes('new')"
                 circle
                 type="primary"
                 icon="el-icon-plus"
                 help="新增"
                 @click="newHandler")
             el-button(
+                v-if="buttonsLayoutComputed.includes('edit')"
                 circle
                 icon="el-icon-edit"
                 help="编辑"
                 :disabled="isEmpty(selection)"
                 @click="editHandler")
             el-button(
+                v-if="buttonsLayoutComputed.includes('delete')"
                 circle
                 icon="el-icon-delete"
                 help="删除"
                 :disabled="isEmpty(selection)"
                 @click="removeHandler")
-            el-button(
-                circle
-                icon="el-icon-folder-delete"
-                help="批量删除")
+            slot
         template(#tag)
             el-tag.tag(
                 v-for="(item, key) in searchForm"
@@ -45,7 +45,9 @@
             @size-change="sizeChange"
             @page-change="pageChange"
             @current-change="selection=$event"
-            v-loading="loading")
+            v-loading="loading"
+            :box="removeMode"
+            @sort-change="$emit('sort-change', $event)")
             slot(
                 v-for="col in column"
                 v-if="col.slot && col.slot.table"
@@ -56,6 +58,11 @@
             :column="dialogColumn"
             @closed="dialogColumnProperties={}"
             @submit="(param, done)=>$emit('submit', param, done)")
+            slot(
+                v-for="col in column"
+                v-if="col.slot && col.slot.dialog"
+                :name="col.slot.dialog"
+                :slot="col.slot.dialog")
 </template>
 
 <script lang="jsx">
@@ -74,7 +81,11 @@ export default {
             type: Object,
             default: () => ({})
         },
-        api: Object
+        api: Object,
+        buttonsLayout: {
+            type: String,
+            default: "new,edit,delete"
+        }
     },
     data() {
         return {
@@ -88,7 +99,8 @@ export default {
             loading: false,
             searchForm: {},
             selection: {},
-            dialogColumnProperties: {}
+            dialogColumnProperties: {},
+            removeMode: false
         };
     },
     computed: {
@@ -118,6 +130,9 @@ export default {
                 }
             }
             return column;
+        },
+        buttonsLayoutComputed() {
+            return this.buttonsLayout.split(",").map(v => v.trim());
         }
     },
     created() {
@@ -192,7 +207,8 @@ export default {
                     type: "warning"
                 }).then(() => this.api.remove({ id: this.selection.id }));
             }
-        }
+        },
+        batchRemoveHandler() {}
     }
 };
 </script>
