@@ -131,7 +131,7 @@ export default {
                     );
 
                     // 字典数量计算成标签颜色
-                    const scale = chroma.scale(["#409EFF", "#67C23A", "#e6a23c", "#F56C6C"]).mode('hsl');
+                    const scale = chroma.scale(["#409EFF", "#67C23A", "#e6a23c", "#F56C6C"]).mode("hsl");
                     const tagColors = {
                         color: scale.colors(dict.length),
                         border: scale.colors(dict.length, null).map(v =>
