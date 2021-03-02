@@ -117,9 +117,13 @@ export default {
         },
         submitHandler(data, done) {
             console.log(data, done);
+            done();
+            this.$refs.view.queryData();
         },
-        sortChange({ column, prop, order }) {
+        sortChange({ column, prop, order }, done) {
             console.log(column, prop, order);
+            done();
+            this.$refs.view.queryData();
         }
     }
 };

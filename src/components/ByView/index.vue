@@ -205,10 +205,12 @@ export default {
                 const html = (<p>确认删除 <span style="color:#F56C6C">{this.selection.id}</span> 吗?</p>);
                 this.$confirm(html, {
                     type: "warning"
-                }).then(() => this.api.remove({ id: this.selection.id }));
+                }).then(() => {
+                    this.loading = true;
+                    this.api.remove({ id: this.selection.id }).finally(() => this.loading = false);
+                });
             }
-        },
-        batchRemoveHandler() {}
+        }
     }
 };
 </script>
