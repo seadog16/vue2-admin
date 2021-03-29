@@ -21,6 +21,7 @@
                     v-else-if="item.options || item.dict"
                     :label="item.label"
                     :prop="item.prop"
+                    :show-overflow-tooltip="false"
                     v-bind="item.properties && item.properties.table")
                     column-tag(
                         slot-scope="{row}"
